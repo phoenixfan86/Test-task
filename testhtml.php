@@ -42,8 +42,48 @@
 			.dropdown-menu {
 		   padding: auto;
 			}
-			
-			.dropdown-menu li a {
+
+			.dropdown-menu {
+				opacity: 0;
+				transform: translateY(10px);
+				transition: all 0.3s ease;
+				display: block;
+				visibility: hidden;
+			}
+
+			.dropdown.open .dropdown-menu {
+				opacity: 1;
+				transform: translateY(0);
+				visibility: visible;
+			}
+
+			.menu-item {
+					position: relative;
+				}
+
+			.menu-item::before {
+					content: '';
+					position: absolute;
+					top: 50%;
+					left: 0;
+					transform: translateY(-50%) scaleY(0);
+					transform-origin: center;
+					width: 3px;
+					height: 100%;
+					background-color: #000;
+					transition: transform 0.5s ease;
+				}
+
+			.menu-item:hover::before {
+					transform: translateY(-50%) scaleY(1);
+				}
+
+			.menu-item:hover .menu-link{
+				transition: all 0.5s ease;
+				background: linear-gradient(to right, rgba(43,45,56,.3),rgba(43,45,56,.05));
+			}
+
+			.menu-link{
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -55,19 +95,69 @@
   			position: relative;
 			}
 
-			.dropdown-submenu > .dropdown-menu {
+			.dropdown-submenu::before{
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 0;
+				transform: translateY(-50%);
+				width: 2px;
+				height: 100%;
+				background-color: #000;
+				transition: all 0.5s ease;
+			}
+
+			.dropdown-submenu:hover::before {
+				animation: move 1s forwards;
+			}
+
+			@keyframes move{
+				from{
+					opacity: 1;
+					left:0;
+				}
+				to{
+					opacity: 0;
+					left: 100%;
+				}
+			}
+
+			.dropdown-submenu .dropdown-menu {
+				opacity: 0;
+				transform: translateY(10px);
+				visibility: hidden;
+				pointer-events: none;
+				animation: none;
+				transition: none;
+				position: absolute;
 				top: 0;
 				left: 100%;
+			}
+
+			.dropdown-submenu:not(:hover) .dropdown-menu {
 				opacity: 0;
-				margin-top: -1px;
-				display: block;
-				position: absolute;
+				visibility: hidden;
+				pointer-events: none;
+				animation: none;
 			}
-	
-			.dropdown-submenu:hover > .dropdown-menu {
-				opacity: 1;
-				transition: all 0.6s ease-in;
+
+			.dropdown-submenu:hover .dropdown-menu {
+				visibility: visible;
+				pointer-events: auto;
+				animation: fadeIn 0.4s ease forwards;
 			}
+
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+					transform: translateY(10px);
+				}
+				100% {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
 
 			 .col-sm-4 img {
 				 max-width:100%;
@@ -79,35 +169,50 @@
 				 box-shadow: 0 0 20px rgba(43,45,56,.06);
 			 }
 
-			 .cabinet {
-				opacity: 0;
-				display: block;
-			 }
-
-			 .cabinet-wrapper:hover .cabinet {
-				opacity: 1;
-				transition: all 0.4s ease-in;
-			 }
-
 			 .form-group {
+				position: absolute;
+				top: 100%;
 				width: 350px;
-				display: flex;
+				display: none;
 				flex-direction: column;
 				align-items: baseline;
 				justify-content: center;
-				gap: 12px;
+				gap: 15px;
 				background: #fff;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 				border: 1px solid #e4e6f2;
-				border-radius: 5px;
-				position: absolute;
-				top: 50px;
+				border-radius: 5px;			
 				padding: 20px;
 				margin-top: 1px;
 			 }
 
-			 .form-heder {
+			 .cabinet-wrapper:hover .form-group{
+				display: flex;
+				animation: hover 1.4s forwards;
+			 }
+
+			 @keyframes hover {
+				0%{
+
+					left: -600%;
+				}
+				50%{
+
+					left: 15%;
+				}
+				75%{
+
+					left: -10%;
+				}
+				100%{
+					left: 0;
+				}
+			}
+
+			 .form-header {
 				width: 200px;
 				display: flex;
+				gap: 5px;
 				align-items: start;
 				justify-content: flex-start;
 				margin-bottom: 5px;
@@ -117,9 +222,15 @@
 				padding: 2px;
 			 }
 
+			 .form-link a{
+				font-size: 16px;
+				color: #66afe9;
+
+			 }
+
 			 .form-link:hover {
 				font-weight: 600;
-				border-bottom: 1px dashed #0000FF;
+				border-bottom: 1px dashed #66afe9;
 			 }
 
 			 .form-link a {
@@ -131,15 +242,17 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				gap: 20px;
 			 }
 
 			 label {
+				flex:1;
 				color: #7d7d7d;
-				font-weight: 400;
+				font-weight: 500;
+				text-shadow: 0 0 2px #cccccc;
 			 }
 
 			 input {
+				flex:2;
 				color: #3d3d3d;
 				font-weight: 600;
 			 }
@@ -152,18 +265,45 @@
 			 .form-required {
 				width: 100%;
 				display: flex;
-				align-items: baseline;
+				align-items: center;
 				justify-content: flex-start;
-				gap: 50px;
+				gap: 25px;
+				margin-top: 5px;
 			 }
 
-			 .form-control {
-				width: 65%;
+			 .form-required label{
+				flex: none;
+				margin-right: 10px;
+				margin-bottom: 0;
 			 }
 
 			 .form-checkbox {
+				flex: none;
+				position: relative;
 				width: 18px;
 				height: 18px;
+				border: 1px solid #cccccc;
+				border-radius: 3px;
+				appearance: none;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				outline: none;
+				cursor: pointer;
+			}	
+
+			.form-checkbox:checked{
+				background-color: #007bff;
+    		border-color: #007bff;
+			}
+
+			.form-checkbox:checked::after {
+				content: '✔';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				color: #fff;
+				font-size: 10px;
+				transform: translate(-50%, -50%);
 			}
 
   </style>
@@ -200,7 +340,9 @@
 		  <div class="container-fluid">
 		    <!-- Brand and toggle get grouped for better mobile display -->
 		    <div class="navbar-header">
-		      <a class="navbar-brand" href="#"><?php echo '<b>'.$info['brand'].'</b>'; ?></a>
+		      <a class="navbar-brand" href="#">
+						<?php echo '<b>'.$info['brand'].'</b>'; ?>
+					</a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -210,7 +352,7 @@
 							<a href="#">Кабінет</a>
 							<form class="cabinet">
 								<div class="form-group">
-									<div class="form-heder">
+									<div class="form-header">
 										<div class="form-link">
 											<a href="#">First Name</a>
 										</div>
@@ -219,12 +361,12 @@
 										</div>
 									</div>
 									<div class="form-item">
-										<label for="name">Name</label>
+										<label for="name">Label</label>
 										<input type="text" placeholder="First Name" class="form-control" id="name">
 									</div>
 									<div class="form-item">
-										<label for="lastname">Last Name</label>
-										<input type="text" placeholder="Last Name" class="form-control" id="lastname">
+										<label for="lastname">Placeholder</label>
+										<input type="text" placeholder="" class="form-control" id="lastname">
 									</div>
 									<div class="form-required">
 										<label for="">Required</label>
@@ -245,20 +387,24 @@
 											</a>
 											<ul class="dropdown-menu">
 												<?php foreach($sub_categories as $sub): ?>
-													<li><a href="#"><?= $sub ?></a></li>
+													<li class="menu-item">
+														<a href="#" class="menu-link">
+															<?= $sub ?>
+														</a>
+													</li>
 												<?php endforeach; ?>
 											</ul>
 										</li>
 										<li role="separator" class="divider"></li>
 									<?php else: ?>
-										<li>
-											<a href="#">
+										<li  class="menu-item">
+											<a href="#" class="menu-link">
 												<?= $category ?>
 											</a>
 										</li>
 									<?php endif; ?>
 
-									<?php if ($index < count(value: $categories) - 1): ?>
+									<?php if ($index < count( $categories) - 1): ?>
 									<?php endif; ?>
 								<?php endforeach; ?>
 							</ul>
