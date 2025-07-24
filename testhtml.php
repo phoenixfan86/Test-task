@@ -210,16 +210,16 @@
 			}
 
 			 .form-header {
-				width: 200px;
 				display: flex;
-				gap: 5px;
+				gap: 3px;
 				align-items: start;
 				justify-content: flex-start;
 				margin-bottom: 5px;
 			 }
 
 			 .form-link {
-				padding: 2px;
+				border-bottom: 1px dashed transparent;
+				transition: all 0.2s ease;
 			 }
 
 			 .form-link a{
@@ -229,8 +229,8 @@
 			 }
 
 			 .form-link:hover {
-				font-weight: 600;
-				border-bottom: 1px dashed #66afe9;
+				text-shadow: 0 0 1.5px #66afe9;
+				border-bottom-color: #66afe9;
 			 }
 
 			 .form-link a {
